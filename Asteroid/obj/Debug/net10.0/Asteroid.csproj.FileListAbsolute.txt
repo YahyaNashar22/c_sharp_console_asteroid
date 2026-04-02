@@ -1,0 +1,14 @@
+D:\csharp\Asteroid\Asteroid\bin\Debug\net10.0\Asteroid.exe
+D:\csharp\Asteroid\Asteroid\bin\Debug\net10.0\Asteroid.deps.json
+D:\csharp\Asteroid\Asteroid\bin\Debug\net10.0\Asteroid.runtimeconfig.json
+D:\csharp\Asteroid\Asteroid\bin\Debug\net10.0\Asteroid.dll
+D:\csharp\Asteroid\Asteroid\bin\Debug\net10.0\Asteroid.pdb
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\Asteroid.GeneratedMSBuildEditorConfig.editorconfig
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\Asteroid.AssemblyInfoInputs.cache
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\Asteroid.AssemblyInfo.cs
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\Asteroid.csproj.CoreCompileInputs.cache
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\Asteroid.dll
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\refint\Asteroid.dll
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\Asteroid.pdb
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\Asteroid.genruntimeconfig.cache
+D:\csharp\Asteroid\Asteroid\obj\Debug\net10.0\ref\Asteroid.dll

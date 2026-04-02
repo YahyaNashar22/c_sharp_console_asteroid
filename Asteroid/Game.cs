@@ -56,7 +56,7 @@ namespace Asteroid
                         break;
 
                     case ConsoleKey.RightArrow:
-                        _player.MoveRight(maxX: 1);
+                        _player.MoveRight(maxX: _width - 2);
                         break;
 
                     case ConsoleKey.Escape:
