@@ -12,7 +12,11 @@ namespace Asteroid
 
         public const char PlayerSymbol = 'A';
         public const char BulletSymbol = '|';
+        public const char AsteroidSymbol = 'O';
 
         public const int BulletSpeed = 1;
+        public const int AsteroidSpeed = 1;
+
+        public const int AsteroidSpawnIntervalFrames = 10;
     }
 }

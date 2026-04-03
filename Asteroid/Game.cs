@@ -12,6 +12,10 @@ namespace Asteroid
         private bool _isRunning;
         private readonly Player _player;
         private readonly List<Bullet> _bullets;
+        private readonly List<Asteroid> _asteroids;
+        private readonly Random _random;
+
+        private int _spawnFrameCounter;
 
         public Game()
         {
@@ -23,6 +27,8 @@ namespace Asteroid
 
             _player = new Player(playerStartX, playerStartY, GameSettings.PlayerSymbol);
             _bullets = new List<Bullet>();
+            _asteroids = new List<Asteroid>();
+            _random = new Random();
         }
 
         public void Run()
@@ -76,7 +82,10 @@ namespace Asteroid
         private void Update()
         {
             UpdateBullets();
+            UpdateAsteroids();
+            SpawnAsteroids();
             RemoveInactiveBullets();
+            RemoveInactiveAsteroids();
         }
 
         private void UpdateBullets()
@@ -87,9 +96,45 @@ namespace Asteroid
             }
         }
 
+        private void UpdateAsteroids()
+        {
+            foreach (Asteroid asteroid in _asteroids)
+            {
+                asteroid.Update();
+            }
+        }
+
+        private void SpawnAsteroids()
+        {
+            _spawnFrameCounter++;
+
+            if (_spawnFrameCounter < GameSettings.AsteroidSpawnIntervalFrames)
+            {
+                return;
+            }
+
+            _spawnFrameCounter = 0;
+
+            int spawnX = _random.Next(1, _width - 1);
+            int spawnY = 1;
+
+            Asteroid asteroid = new Asteroid(
+                spawnX,
+                spawnY,
+                GameSettings.AsteroidSymbol
+                );
+
+            _asteroids.Add(asteroid);
+        }
+
         private void RemoveInactiveBullets()
         {
             _bullets.RemoveAll(bullet => !bullet.IsActive);
+        }
+
+        private void RemoveInactiveAsteroids()
+        {
+            _asteroids.RemoveAll(asteroid => !asteroid.IsActive);
         }
 
         private void Render()
@@ -107,13 +152,17 @@ namespace Asteroid
                     {
                         buffer.Append('#');
                     }
-                    else if (IsPlayerAtPosition(x,y))
+                    else if (IsPlayerAtPosition(x, y))
                     {
                         buffer.Append(_player.Symbol);
                     }
                     else if (TryGetBulletAtPosition(x, y, out Bullet? bullet))
                     {
                         buffer.Append(bullet!.Symbol);
+                    }
+                    else if (TryGetAsteroidAtPosition(x, y, out Asteroid? asteroid))
+                    {
+                        buffer.Append(asteroid!.Symbol);
                     }
                     else
                     {
@@ -152,6 +201,20 @@ namespace Asteroid
                 }
             }
             foundBullet = null;
+            return false;
+        }
+
+        private bool TryGetAsteroidAtPosition(int x, int y, out Asteroid? foundAsteroid)
+        {
+            foreach (Asteroid asteroid in _asteroids)
+            {
+                if (asteroid.X == x && asteroid.Y == y && asteroid.IsActive)
+                {
+                    foundAsteroid = asteroid;
+                    return true;
+                }
+            }
+            foundAsteroid = null;
             return false;
         }
     }
