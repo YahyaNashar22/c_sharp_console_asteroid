@@ -9,6 +9,10 @@ namespace Asteroid
         public const int Width = 40;
         public const int Height = 40;
         public const int FrameDelayMs = 50;
+
         public const char PlayerSymbol = 'A';
+        public const char BulletSymbol = '|';
+
+        public const int BulletSpeed = 1;
     }
 }

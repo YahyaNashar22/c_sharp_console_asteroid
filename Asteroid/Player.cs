@@ -31,5 +31,10 @@ namespace Asteroid
                 X++;
             }
         }
+
+        public Bullet Shoot()
+        {
+            return new Bullet(X, Y - 1, GameSettings.BulletSymbol);
+        }
     }
 }

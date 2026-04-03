@@ -8,8 +8,10 @@ namespace Asteroid
     {
         private readonly int _width;
         private readonly int _height;
+
         private bool _isRunning;
         private readonly Player _player;
+        private readonly List<Bullet> _bullets;
 
         public Game()
         {
@@ -20,6 +22,7 @@ namespace Asteroid
             int playerStartY = _height - 2;
 
             _player = new Player(playerStartX, playerStartY, GameSettings.PlayerSymbol);
+            _bullets = new List<Bullet>();
         }
 
         public void Run()
@@ -27,7 +30,7 @@ namespace Asteroid
             InitializeConsole();
             _isRunning = true;
 
-            while(_isRunning)
+            while (_isRunning)
             {
                 HandleInput();
                 Update();
@@ -45,7 +48,7 @@ namespace Asteroid
 
         private void HandleInput()
         {
-            while(Console.KeyAvailable)
+            while (Console.KeyAvailable)
             {
                 ConsoleKey key = Console.ReadKey(intercept: true).Key;
 
@@ -59,6 +62,10 @@ namespace Asteroid
                         _player.MoveRight(maxX: _width - 2);
                         break;
 
+                    case ConsoleKey.Spacebar:
+                        _bullets.Add(_player.Shoot());
+                        break;
+
                     case ConsoleKey.Escape:
                         _isRunning = false;
                         break;
@@ -68,7 +75,21 @@ namespace Asteroid
 
         private void Update()
         {
+            UpdateBullets();
+            RemoveInactiveBullets();
+        }
 
+        private void UpdateBullets()
+        {
+            foreach (Bullet bullet in _bullets)
+            {
+                bullet.Update();
+            }
+        }
+
+        private void RemoveInactiveBullets()
+        {
+            _bullets.RemoveAll(bullet => !bullet.IsActive);
         }
 
         private void Render()
@@ -81,19 +102,18 @@ namespace Asteroid
             {
                 for (int x = 0; x < _width; x++)
                 {
-                    bool isBorder =
-                        y == 0 ||
-                        y == _height - 1 ||
-                        x == 0 ||
-                        x == _width - 1;
 
-                    if ( isBorder )
+                    if (IsBorder(x, y))
                     {
                         buffer.Append('#');
                     }
-                    else if (x == _player.X && y == _player.Y)
+                    else if (IsPlayerAtPosition(x,y))
                     {
                         buffer.Append(_player.Symbol);
+                    }
+                    else if (TryGetBulletAtPosition(x, y, out Bullet? bullet))
+                    {
+                        buffer.Append(bullet!.Symbol);
                     }
                     else
                     {
@@ -105,6 +125,34 @@ namespace Asteroid
             buffer.Append($"Use Left/Right arrows to move, ESC to quit");
 
             Console.Write(buffer.ToString());
+        }
+
+        private bool IsBorder(int x, int y)
+        {
+            return y == 0 ||
+                    y == _height - 1 ||
+                    x == 0 ||
+                    x == _width - 1;
+
+        }
+
+        private bool IsPlayerAtPosition(int x, int y)
+        {
+            return x == _player.X && y == _player.Y;
+        }
+
+        private bool TryGetBulletAtPosition(int x, int y, out Bullet? foundBullet)
+        {
+            foreach (Bullet bullet in _bullets)
+            {
+                if (bullet.X == x && bullet.Y == y && bullet.IsActive)
+                {
+                    foundBullet = bullet;
+                    return true;
+                }
+            }
+            foundBullet = null;
+            return false;
         }
     }
 }
